@@ -1,0 +1,112 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Matieu.Data"
+        xmlns:root="clr-namespace:Matieu"
+        x:Class="Matieu.MainWindow"
+        Title="Матье" Width="1100" Height="700"
+        WindowStartupLocation="CenterScreen" Background="White">
+
+	<Window.Styles>
+		<!-- Стиль, чтобы RadioButton выглядел как вкладка (Tab) -->
+		<Style Selector="RadioButton">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0,0,0,2"/>
+			<Setter Property="BorderBrush" Value="Transparent"/>
+			<Setter Property="Padding" Value="10,5"/>
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ContentPresenter Content="{TemplateBinding Content}"
+										  HorizontalAlignment="Center"
+										  VerticalAlignment="Center"
+										  Margin="{TemplateBinding Padding}"/>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<!-- Когда выбрано - фиолетовая линия -->
+		<Style Selector="RadioButton:checked">
+			<Setter Property="BorderBrush" Value="Purple"/>
+			<Setter Property="Foreground" Value="Purple"/>
+		</Style>
+	</Window.Styles>
+
+	<Grid ColumnDefinitions="200, *, 200" Margin="10">
+
+		<!-- ЛЕВАЯ ПАНЕЛЬ -->
+		<StackPanel Grid.Column="0" Spacing="10">
+			<Border BorderBrush="Black" BorderThickness="1" Height="150" Margin="0,0,0,20">
+				<Image Source="\Resources\Logo.png"/>
+			</Border>
+			<Button Content="Услуги" HorizontalAlignment="Stretch" Background="White" BorderBrush="Black" BorderThickness="1"/>
+			<Button Content="Добавить услугу" Click="BtnAddService_Click" HorizontalAlignment="Stretch" Background="White" BorderBrush="Black" BorderThickness="1"/>
+			<Separator Height="20" Background="Transparent"/>
+			<Button Content="Выход" Click="BtnExit_Click" HorizontalAlignment="Stretch" Background="White" BorderBrush="Black" BorderThickness="1"/>
+		</StackPanel>
+
+		<!-- ЦЕНТРАЛЬНАЯ ЧАСТЬ -->
+		<DockPanel Grid.Column="1" Margin="20,0">
+			<!-- ВКЛАДКИ (Кастом / Косплей) -->
+			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="20" Margin="0,0,0,10">
+				<RadioButton Content="Кастом" Name="rbCustom" IsChecked="True"
+							 GroupName="Category" IsCheckedChanged="OnFilterChanged"/>
+				<RadioButton Content="Косплей" Name="rbCosplay"
+							 GroupName="Category" IsCheckedChanged="OnFilterChanged"/>
+			</StackPanel>
+
+			<!-- СПИСОК УСЛУГ -->
+			<ListBox Name="lstServices" Background="Transparent" BorderThickness="0">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="local:Service">
+						<Border BorderBrush="Black" BorderThickness="1" Margin="0,5" Padding="10">
+							<Grid ColumnDefinitions="150, *, Auto">
+								<Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Width="120" Height="120">
+									<Image Source="{Binding PreviewBitmap}" Stretch="UniformToFill"/>
+								</Border>
+
+								<StackPanel Grid.Column="1" Margin="15,0">
+									<TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
+									<TextBlock Text="{Binding CollectionName}" Foreground="Gray"/>
+									<TextBlock Text="{Binding Price, StringFormat='{}{0} руб.'}" Margin="0,5"/>
+									<TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"/>
+								</StackPanel>
+
+								<Button Grid.Column="2" Content="Редактировать"
+										Click="BtnEditService_Click" Tag="{Binding}"
+										VerticalAlignment="Bottom" Background="White"
+										BorderBrush="Black" BorderThickness="1"/>
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</DockPanel>
+
+		<!-- ПРАВАЯ ПАНЕЛЬ -->
+		<StackPanel Grid.Column="2" Spacing="10">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5">
+				<Button Content="Свернуть" Click="BtnMinimize_Click"/>
+				<Button Content="Закрыть" Click="BtnClose_Click"/>
+			</StackPanel>
+
+			<TextBox Name="txtSearch" Watermark="Поиск" Margin="0,10,0,0" KeyUp="OnSearchKeyUp"/>
+
+			<ComboBox Name="cbCollections" HorizontalAlignment="Stretch" SelectionChanged="OnSelectionChanged">
+				<ComboBox.ItemTemplate>
+					<DataTemplate x:DataType="local:Collection">
+						<TextBlock Text="{Binding Name}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+				<Button Content="◀" Click="BtnPrev_Click" Width="40"/>
+				<Button Content="▶" Click="BtnNext_Click" Width="40"/>
+			</StackPanel>
+
+			<TextBlock Name="txtPagination" Text="0-0 из 0" HorizontalAlignment="Center"/>
+		</StackPanel>
+	</Grid>
+</Window>

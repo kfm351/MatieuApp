@@ -1,0 +1,63 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Matieu.LoginWindow"
+        Title="Авторизация" WindowStartupLocation="CenterScreen"
+        CanResize="False" Width="800" Height="450"
+        Background="White" Foreground="Black">
+
+	<!-- Основной контейнер, который центрирует содержимое -->
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+
+		<!-- Ограничиваем ширину формы для аккуратного вида -->
+		<StackPanel Width="350">
+
+			<TextBlock Text="ВХОД В СИСТЕМУ"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,30"
+                       HorizontalAlignment="Center"/>
+
+			<TextBlock Text="ЛОГИН"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,5"/>
+			<TextBox Name="txtLogin"
+                     Watermark="Введите логин"
+                     Margin="0,0,0,20"
+                     Background="Transparent"
+                     BorderBrush="Black"
+                     BorderThickness="1"/>
+
+			<TextBlock Text="ПАРОЛЬ"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,5"/>
+			<TextBox Name="txtPassword"
+                     PasswordChar="*"
+                     Watermark="Введите пароль"
+                     Margin="0,0,0,10"
+                     Background="Transparent"
+                     BorderBrush="Black"
+                     BorderThickness="1"/>
+
+			<!-- Сообщение об ошибке -->
+			<TextBlock Name="lblError"
+                       Foreground="Red"
+                       FontSize="12"
+                       Margin="0,0,0,20"
+                       HorizontalAlignment="Center"
+                       Height="15"/>
+
+			<Button Name="btnAuth"
+                    Content="ВОЙТИ"
+                    Click="BtnAuth_Click"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="Black"
+                    Foreground="White"
+                    Height="45"
+                    CornerRadius="0"/>
+		</StackPanel>
+	</Grid>
+</Window>

@@ -1,0 +1,10 @@
+[Aa]p[Pp][Dd]ata/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates

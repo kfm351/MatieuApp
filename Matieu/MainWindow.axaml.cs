@@ -5,6 +5,7 @@ using Matieu.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Matieu
 {
@@ -114,8 +115,7 @@ namespace Matieu
         private void BtnNext_Click(object? sender, RoutedEventArgs e) { if (_currentPage * _pageSize < _totalItems) { _currentPage++; LoadData(); } }
         private void BtnExit_Click(object? sender, RoutedEventArgs e) => Close();
         private void BtnMinimize_Click(object? sender, RoutedEventArgs e) => this.WindowState = WindowState.Minimized;
-        private void BtnClose_Click(object? sender, RoutedEventArgs e) => Close();
-
+       
         private void BtnAddService_Click(object? sender, RoutedEventArgs e)
         {
             var win = new ServiceEditWindow();
@@ -123,6 +123,44 @@ namespace Matieu
             win.ShowDialog(this);
         }
 
+        private bool _isClosingConfirmed = false;
+
+        // 1. Метод для вызова диалога
+        private async Task<bool> ShowExitDialog()
+        {
+            var dialog = new ConfirmWindow();
+            return await dialog.ShowDialog<bool>(this);
+        }
+
+        // 2. Исправляем обработчик внутренней кнопки "Закрыть"
+        private async void BtnClose_Click(object? sender, RoutedEventArgs e)
+        {
+            if (await ShowExitDialog())
+            {
+                _isClosingConfirmed = true;
+                this.Close();
+            }
+        }
+
+        // 3. Перехватываем системный крестик (X)
+        protected override async void OnClosing(WindowClosingEventArgs e)
+        {
+            // Если мы уже подтвердили выход, просто закрываем
+            if (_isClosingConfirmed)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
+            // Иначе отменяем стандартное закрытие и показываем свой диалог
+            e.Cancel = true;
+
+            if (await ShowExitDialog())
+            {
+                _isClosingConfirmed = true;
+                this.Close(); // Вызываем закрытие снова, теперь оно пройдет
+            }
+        }
         private void BtnEditService_Click(object? sender, RoutedEventArgs e)
         {
             if ((sender as Button)?.Tag is Service service)

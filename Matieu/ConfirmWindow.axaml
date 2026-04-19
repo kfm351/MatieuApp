@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Matieu.ConfirmWindow"
+        Title="Подтверждение" Width="350" Height="180"
+        WindowStartupLocation="CenterOwner" CanResize="False"
+        Background="White" Foreground="Black">
+
+	<StackPanel Margin="20" VerticalAlignment="Center" Spacing="20">
+		<TextBlock Text="Текущая сессия будет завершена.&#x0a;Закрыть приложение?"
+                   TextAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap"/>
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+			<Button Content="Да" Click="BtnYes_Click" Width="80"
+                    HorizontalContentAlignment="Center" Background="Black" Foreground="White"/>
+			<Button Content="Нет" Click="BtnNo_Click" Width="80"
+                    HorizontalContentAlignment="Center"/>
+		</StackPanel>
+	</StackPanel>
+</Window>
